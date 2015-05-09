@@ -1,29 +1,33 @@
 #include "Casella.h"
-////NIVELL 1///
+////Constants per al NIVELL 1///
 
 const int FILES_NIVELL_1 = 9;
 const int COL_NIVELL_1 = 9;
 const int MINES_NIVELL_1 = 10;
 
-////NIVELL 2///
+////Constants per al NIVELL 2///
 
 const int FILES_NIVELL_2 = 16;
 const int COL_NIVELL_2 = 16;
 const int MINES_NIVELL_2 = 40;
 
-////NIVELL 3///
+////Constants per al NIVELL 3///
 
 const int FILES_NIVELL_3 = 16;
 const int COL_NIVELL_3 = 30;
 const int MINES_NIVELL_3 = 99;
 
+
+/*
+Creacio de la clase Tauler amb el constructor i la funcio obtenir el numero de mines
+*/
 class Tauler {
 public:
 	Tauler();
 	~Tauler();
-	Tauler(int files, int columnes, int mines);
-	void inicialitza();
-	int getNumMines() const;
+	Tauler(int files, int columnes, int nivell);
+	void inicialitza(int mines);
+	int getNumMines(Casella clicada) ;
 private:
 	int m_mines;
 	int m_files;
