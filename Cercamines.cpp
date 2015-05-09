@@ -7,5 +7,6 @@ void main() {
 	cout << "Entra el teu nom: ";
 	Tauler m_tauler = Tauler();
 	m_tauler.inicialitza();
+	int hola;
 
 }
