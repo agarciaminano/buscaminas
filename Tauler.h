@@ -1,4 +1,7 @@
 #include "Casella.h"
+
+const int N_FILAS_I_COL = 5;
+
 ////Constants per al NIVELL 1///
 
 const int FILES_NIVELL_1 = 9;
@@ -25,9 +28,12 @@ class Tauler {
 public:
 	Tauler();
 	~Tauler();
-	Tauler(int nivell);
-	void inicialitza(int nivell);
 
+	Tauler(int nivell);
+	void destrueixTauler();
+
+	void inicialitza();
+	void afegirMines();
 	/////GETTERS I SETTERS/////////
 	int getNumMines(Casella clicada);
 	void setNivell(int nivell);

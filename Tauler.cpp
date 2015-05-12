@@ -1,5 +1,7 @@
 #include "Tauler.h"
-
+#include "time.h"
+#include <stdlib.h>  
+#include <stdio.h> 
 /**
 * Constructor per defecte, necessitem com a mínim una dada de nivell per poder inicialitzar el tauler!
 */
@@ -11,43 +13,38 @@ Tauler::Tauler() {
 * @param nivell nivell de dificultat del joc.
 */
 Tauler::Tauler(int nivell){
+	m_nivell = nivell;
 	 ///Inicialització del tauler depenent del nivell de joc escollit
-	switch (nivell)
-	{
-	case 1: m_files = FILES_NIVELL_1;
-			m_columnes = COL_NIVELL_1;
-			m_mines = MINES_NIVELL_1;
-			break;
-	case 2: m_files = FILES_NIVELL_2;
-			m_columnes = COL_NIVELL_2;
-			m_mines = MINES_NIVELL_2;
-			break;
-	case 3: m_files = FILES_NIVELL_3;
-			m_columnes = COL_NIVELL_3;
-			m_mines = MINES_NIVELL_3;
-			break;
-
-	default:
-		break;
-	}
+	inicialitza();
 
 
 }
 
 Tauler::~Tauler()
 {
+	destrueixTauler();
+}
+
+/*
+* Destruccio de matriu dinámica!
+*
+*/
+void Tauler::destrueixTauler() {
+
 	for (int i = 0; i < m_files; i++)
 	{
 		delete[] m_tauler[i];
 	}
 	delete[] m_tauler;
 }
+
 /*
 * Creació de matriu dinámica!
 *
 */
 void Tauler::creaTauler() {
 	Casella** matriu;
+
 	matriu = new Casella*[m_files];
 	for (int i = 0; i < m_files; i++)
 	{
@@ -62,13 +59,58 @@ void Tauler::setNivell(int nivell)
 	m_nivell = nivell;
 }
 
-void Tauler::inicialitza(int nivell){
+void Tauler::inicialitza(){
 
-	//while(mines > 0 ){
-//	random casella per posar les mines mentres mines > 0
-	//mines--:
+	//Destrueix tauler
+	m_files = N_FILAS_I_COL * m_nivell;
+	m_columnes = N_FILAS_I_COL * m_nivell;
+	destrueixTauler();
+	creaTauler();
+
+	//Afegim les mines
+	afegirMines();
 
 }
+
+
+
+
+
+/*
+		Metode per afegir mines al inicialitzar la partida
+*/
+void Tauler::afegirMines(){
+
+	int fila, columna;
+	srand(time(NULL));
+
+	int contador = 0;
+	Casella casellaMina;
+	while (contador <= m_mines){
+		fila = rand() % m_files;
+		columna = rand() % m_columnes;
+		casellaMina = m_tauler[fila][columna];
+
+		if (!casellaMina.getMina()){
+			casellaMina.setMina();
+			contador++;
+		}
+		//caso centro
+		casellaMina = m_tauler[fila-1][columna-1];
+		for (int i = 0; i < 3; i++){
+			for (int j = 0; j < 3; j++){
+				casellaMina = m_tauler[fila+j][columna +i];
+				casellaMina.incrementaValor();
+		}
+
+	}
+}
+
+
+
+
+
+
 /*metode per obtenir el nombre de mines que te a voltant de la casella clicada "visible"
 
 hem de recorre si es posible tot el voltant de les casella clicada. El total maxim per recorre es 8 i el minim 3
