@@ -9,6 +9,8 @@ public:
 	bool getMina();
 	void setMina();
 	void incrementaValor();
+	bool getVisible();
+	
 private:
 	bool m_visible;
 	bool m_marcada;

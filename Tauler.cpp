@@ -96,20 +96,18 @@ void Tauler::afegirMines(){
 			contador++;
 		}
 		//caso centro
-		casellaMina = m_tauler[fila-1][columna-1];
+		casellaMina = m_tauler[fila - 1][columna - 1];
 		for (int i = 0; i < 3; i++){
 			for (int j = 0; j < 3; j++){
-				casellaMina = m_tauler[fila+j][columna +i];
+				casellaMina = m_tauler[fila + j][columna + i];
 				casellaMina.incrementaValor();
+			}
+
 		}
-
 	}
+
+
 }
-
-
-
-
-
 
 /*metode per obtenir el nombre de mines que te a voltant de la casella clicada "visible"
 
@@ -124,4 +122,32 @@ int Tauler::getNumMines(Casella casellaClicada){
 
 
 	return nombreMines;
+}
+
+void Tauler::marcaCasella(int fila, int columna){}
+
+
+
+
+
+bool Tauler::destaparCasella(int fila, int columna){}
+
+void Tauler::comprobarCasella(int x, int y){
+	Casella casella;
+	casella = m_tauler[x, y];
+	if (!casella.getVisible()){
+		if (casella.getMina()){
+			//fi partida
+		}
+		else{
+			//sumar un punto
+			if (getVeines(casella))
+			{
+				//pintar nombre veines
+			}
+			else{
+
+			}//hem guanyat?
+		}
+	}
 }

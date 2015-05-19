@@ -40,6 +40,12 @@ public:
 	//////////////////////////////
 
 
+	void marcaCasella(int fila, int columna);
+	bool destaparCasella(int fila, int columna);
+
+	bool getVeines(Casella casella);
+	void comprobarCasella(int x, int y);
+
 private:
 
 	//// VARIABLES DE JOC ////
@@ -53,5 +59,6 @@ private:
 	Casella** m_tauler;
 	void creaTauler();
 	void ompleTauler();
+
 
 };
