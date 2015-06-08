@@ -1,4 +1,6 @@
 #include "Casella.h"
+#include <iostream>
+using namespace std;
 
 const int N_FILAS_I_COL = 5;
 
@@ -45,6 +47,7 @@ public:
 
 	bool getVeines(Casella casella);
 	void comprobarCasella(int x, int y);
+	void pintaTauler();
 
 private:
 

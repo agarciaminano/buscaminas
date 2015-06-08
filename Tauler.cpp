@@ -130,8 +130,16 @@ void Tauler::marcaCasella(int fila, int columna)
 }
 
 
-bool Tauler::destaparCasella(int fila, int columna){}
+bool Tauler::destaparCasella(int fila, int columna){
+	m_tauler[fila][columna].setVisible(true);
+}
 
+/**
+* Comproba si una casella conté una mina o bé conté un valor.
+* Per fer-ho haura de comprobar que no estigui visible actualment.
+* També verificarà si ja hem guanyat la partida.
+*
+*/
 void Tauler::comprobarCasella(int x, int y){
 	Casella casella;
 	casella = m_tauler[x, y];
@@ -150,4 +158,20 @@ void Tauler::comprobarCasella(int x, int y){
 			}//hem guanyat?
 		}
 	}
+}
+
+void Tauler::pintaTauler(){
+	for (int i = 0; i < m_files; i++)
+		for (int j = 0; j < m_columnes; i++)
+		{
+		if (m_tauler[i][j].getMina())
+			cout << "X";
+		else if (m_tauler[i][j].getValor() == 0)
+			cout << "[	]";
+		else if (!m_tauler[i][j].getVisible())
+			cout << "[]";
+		else
+			cout << "[" << m_tauler[i][j].getValor() << "]";
+		}
+	cout << endl;
 }

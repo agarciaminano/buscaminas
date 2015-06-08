@@ -4,12 +4,18 @@ public:
 	Casella();
 	~Casella();
 	Casella(bool mina);
-	bool descobreixCasella();
-	void setMarcada();
-	bool getMina();
-	void setMina();
-	void incrementaValor();
+	/////GETTERS I SETTERS//////////
 	bool getVisible();
+	bool getMina();
+	int getValor();
+
+	void setMarcada();
+	void setMina();
+	////////////////////////////////
+
+	bool descobreixCasella();
+	void incrementaValor();
+	void setVisible(bool b);
 	
 private:
 	bool m_visible;
