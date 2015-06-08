@@ -72,6 +72,7 @@
     <ClCompile Include="Casella.cpp" />
     <ClCompile Include="Cercamines.cpp" />
     <ClCompile Include="Partida.cpp" />
+    <ClCompile Include="Puntuacio.cpp" />
     <ClCompile Include="Tauler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

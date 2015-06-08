@@ -17,7 +17,6 @@ Tauler::Tauler(int nivell){
 	 ///Inicialització del tauler depenent del nivell de joc escollit
 	inicialitza();
 
-
 }
 
 Tauler::~Tauler()
@@ -124,10 +123,11 @@ int Tauler::getNumMines(Casella casellaClicada){
 	return nombreMines;
 }
 
-void Tauler::marcaCasella(int fila, int columna){}
+void Tauler::marcaCasella(int fila, int columna)
+{
 
 
-
+}
 
 
 bool Tauler::destaparCasella(int fila, int columna){}
