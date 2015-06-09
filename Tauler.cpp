@@ -28,7 +28,7 @@ Tauler::~Tauler()
 }
 
 /*
-* Destruccio de matriu dinámica!
+* Destruccio de matriu dinàmica!
 *
 */
 void Tauler::destrueixTauler() {
@@ -40,8 +40,22 @@ void Tauler::destrueixTauler() {
 	delete[] m_tauler;
 }
 
+void Tauler::pintaTaulerTest() {
+	for (int i = 0; i < m_files; i++)
+	{
+		for (int j = 0; j < m_columnes; j++)
+		{
+			if (m_tauler[i][j].getMina())
+				cout << " X ";
+			else
+				cout << "[" << m_tauler[i][j].getValor() << "]";
+		}
+		cout << endl;
+	}
+}
+
 /*
-* Creació de matriu dinámica!
+* Creació de matriu dinàmica!
 *
 */
 void Tauler::creaTauler() {
@@ -64,9 +78,11 @@ void Tauler::setNivell(int nivell)
 void Tauler::inicialitza(){
 
 	//Destrueix tauler
+	m_casellesDestapades = 0;
+	m_puntuacio = 0;
 	m_files = N_FILAS_I_COL * m_nivell;
 	m_columnes = N_FILAS_I_COL * m_nivell;
-	m_mines = 5 * m_nivell;
+	m_mines = N_FILAS_I_COL * m_nivell;
 	creaTauler();
 	
 	//Afegim les mines
@@ -87,27 +103,27 @@ void Tauler::afegirMines(){
 	srand(time(NULL));
 
 	int contador = 0;
-	Casella casellaMina;
+	
 	do {
 		fila = rand() % m_files;
 		columna = rand() % m_columnes;
-		casellaMina = m_tauler[fila][columna];
+		
 
-		if (!casellaMina.getMina()){
-			casellaMina.setMina();
+		if (!m_tauler[fila][columna].getMina()){
+			m_tauler[fila][columna].setMina();
 			contador++;
 		}
 		/// Sempre agafem el máxim entre 0 i la fila actual -1 per no sortir-nos mai de la matriu.
 		// Fem el mateix amb la columna
 		int filNova = fmax(fila - 1, 0);
 		int colNova = fmax(columna - 1, 0);		//Amb la part superior dreta tenim el mateix problema, per tant agafem el mínim
-		int filMaxNova = fmin(fila + 1, m_files -1 );  // entre els dos valors per tal de no sortir-nos dels limits
-		int colMaxNova = fmin(columna + 1, m_columnes - 1);
-		casellaMina = m_tauler[filNova][colNova];
-		for (int i = filNova; i < fmin(fila + 1, m_files); i++){
-			for (int j = colNova; j < fmin(columna + 1, m_columnes); j++){
-				casellaMina = m_tauler[i][j];
-				casellaMina.incrementaValor();
+		int filMaxNova = fmin(fila + 1, m_files-1 );  // entre els dos valors per tal de no sortir-nos dels limits
+		int colMaxNova = fmin(columna + 1, m_columnes-1);
+	
+		for (int i = filNova; i <= filMaxNova; i++){
+			for (int j = colNova; j <= colMaxNova; j++){
+				m_tauler[i][j].incrementaValor();
+				
 			}
 
 		} 
@@ -123,18 +139,43 @@ hem de recorre si es posible tot el voltant de les casella clicada. El total max
 
 */
 int Tauler::getNumMines(Casella casellaClicada){
-	int nombreMines = 1;
-
-	//hem de recorre el voltant de la casella
 
 
-	return nombreMines;
+	return casellaClicada.getValor();
 }
 
 void Tauler::marcaCasella(int fila, int columna)
 {
 
 
+}
+/*
+* Mètode per destapar les caselles sense mines veines de forma recursiva
+*/
+void Tauler::destapaRecursiu(int x, int y)
+{
+
+	int filNova = fmax(x - 1, 0);
+	int colNova = fmax(y - 1, 0);		//Amb la part superior dreta tenim el mateix problema, per tant agafem el mínim
+	int filMaxNova = fmin(x + 1, m_files - 1);  // entre els dos valors per tal de no sortir-nos dels limits
+	int colMaxNova = fmin(y + 1, m_columnes - 1);
+	m_tauler[x][y].descobreixCasella();
+	m_casellesDestapades++;
+	if (!getVeines(m_tauler[x][y])) {
+		for (int i = filNova; i <= filMaxNova; i++){
+			for (int j = colNova; j <= colMaxNova; j++){
+				if (!m_tauler[i][j].getVisible())
+				{
+
+					destapaRecursiu(i, j);
+				}
+
+
+
+
+			}
+		}
+	}
 }
 
 /*
@@ -147,8 +188,10 @@ bool Tauler::destaparCasella(int fila, int columna){
 	bool pot = true;
 	if (m_tauler[fila][columna].getVisible())
 		pot = false;
-	else
+	else{
 		m_tauler[fila][columna].descobreixCasella();
+		comprobarCasella(fila, columna);
+	}
 	return pot;
 }
 
@@ -161,37 +204,47 @@ bool Tauler::destaparCasella(int fila, int columna){
 void Tauler::comprobarCasella(int x, int y){
 	Casella casella;
 	casella = m_tauler[x][y];
-	if (!casella.getVisible()){
 		if (casella.getMina()){
 			m_jocFinalitzat = true;
 		}
 		else{
-			//sumar un punto
-			if (getVeines(casella))
-			{
-				//pintar nombre veines
-			}
-			else{
+			m_casellesDestapades++;
+			m_puntuacio++;
 			
-				
-			}//hem guanyat?
+			if (m_casellesDestapades == ((m_files*m_columnes)-m_mines))
+			{
+				m_jocGuanyat = true;
+			}
+			else if (!getVeines(casella))
+			{
+				destapaRecursiu(x, y);
+			}
 		}
-	}
+	
 }
 
+/*
+* Dibuixa el tauler en pantalla, segons l'element que hi hagi dibuixarà diferents caràcters.
+* Si la casella no es visible dibuixarà []
+* Si la casella es visible pero no té mines adjacents dibuixara [	]
+* Si la casella té una mina dibuixarà X
+* Si la casella està marcada dibuixara [?]
+*/
 void Tauler::pintaTauler(){
 	for (int i = 0; i < m_files; i++)
 	{
 		for (int j = 0; j < m_columnes; j++)
 		{
-			if (m_tauler[i][j].getMina())
-				cout << "X";
-			else if (!m_tauler[i][j].getVisible())
+			
+			 if (!m_tauler[i][j].getVisible())
 				cout << "[]";
-			else if (m_tauler[i][j].getValor() == 0)
-				cout << "[	]";
-			else
-				cout << "[" << m_tauler[i][j].getValor() << "]";
+			 else if (m_tauler[i][j].getMina())
+					cout << " X ";
+			 else if (getVeines(m_tauler[i][j]))
+				 cout << "[" << m_tauler[i][j].getValor() << "]";
+			else  
+				cout << "  ";
+			
 		}
 		cout << endl;
 	}
@@ -213,5 +266,5 @@ bool Tauler::jocPerdut(){
 }
 
 bool Tauler::getVeines(Casella c) {
-	return NULL;
+	return (c.getValor() > 0);
 }

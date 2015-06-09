@@ -30,14 +30,16 @@ void Partida::joc(){
 	bool jocAcabat = false;
 	do {
 		m_tauler.pintaTauler();
-		cout << endl << "Que vols fer? (Marcar (M), Destapar(D) )";
+		m_tauler.pintaTaulerTest();
+		cout << endl << "Que vols fer? (Marcar (M), Destapar(D)): ";
 		cin >> opc;
 		cout << endl << "Indica fila i columna: ";
 		cin >> fila;
 		cin >> columna;
-		if (opc == 'D')
+		if (opc == 'd')
 		{
-			if (m_tauler.destaparCasella(fila, columna));
+			if (m_tauler.destaparCasella(fila-1, columna-1));
+			
 
 		}
 	} while (!jocAcabat);

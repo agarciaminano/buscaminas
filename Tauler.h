@@ -6,23 +6,6 @@ using namespace std;
 
 const int N_FILAS_I_COL = 5;
 
-////Constants per al NIVELL 1///
-
-const int FILES_NIVELL_1 = 9;
-const int COL_NIVELL_1 = 9;
-const int MINES_NIVELL_1 = 10;
-
-////Constants per al NIVELL 2///
-
-const int FILES_NIVELL_2 = 16;
-const int COL_NIVELL_2 = 16;
-const int MINES_NIVELL_2 = 40;
-
-////Constants per al NIVELL 3///
-
-const int FILES_NIVELL_3 = 16;
-const int COL_NIVELL_3 = 30;
-const int MINES_NIVELL_3 = 99;
 
 
 /*
@@ -53,6 +36,7 @@ public:
 	
 	void comprobarCasella(int x, int y);
 	void pintaTauler();
+	void pintaTaulerTest();
 
 private:
 
@@ -61,8 +45,11 @@ private:
 	int m_files;
 	int m_columnes;
 	int m_nivell;
+	int m_casellesDestapades;
+	int m_puntuacio;
 	bool m_jocFinalitzat;
 	bool m_jocGuanyat;
+	void destapaRecursiu(int x, int y);
 	/////////////////////////
 
 	///// Necesitem una matriu dinámica per tal de crear-la en temps d'execució depenent del nivell de joc escollit.///////
