@@ -4,9 +4,12 @@
 #include <stdio.h> 
 /**
 * Constructor per defecte, necessitem com a mínim una dada de nivell per poder inicialitzar el tauler!
+* Per tant aquest constructor NO ES POT UTILITZAR!
 */
 Tauler::Tauler() {
-	Tauler(1);
+	m_files = 0;
+	m_columnes = 0;
+	m_tauler = NULL;
 }
 /**
 * Crea el tauler a partir del nivell que rep com a parametre
@@ -15,13 +18,13 @@ Tauler::Tauler() {
 Tauler::Tauler(int nivell){
 	m_nivell = nivell;
 	 ///Inicialització del tauler depenent del nivell de joc escollit
-	inicialitza();
+	
 
 }
 
 Tauler::~Tauler()
 {
-	destrueixTauler();
+	
 }
 
 /*
@@ -63,9 +66,9 @@ void Tauler::inicialitza(){
 	//Destrueix tauler
 	m_files = N_FILAS_I_COL * m_nivell;
 	m_columnes = N_FILAS_I_COL * m_nivell;
-	destrueixTauler();
+	m_mines = 5 * m_nivell;
 	creaTauler();
-
+	
 	//Afegim les mines
 	afegirMines();
 
@@ -85,7 +88,7 @@ void Tauler::afegirMines(){
 
 	int contador = 0;
 	Casella casellaMina;
-	while (contador <= m_mines){
+	do {
 		fila = rand() % m_files;
 		columna = rand() % m_columnes;
 		casellaMina = m_tauler[fila][columna];
@@ -95,15 +98,19 @@ void Tauler::afegirMines(){
 			contador++;
 		}
 		//caso centro
-		casellaMina = m_tauler[fila - 1][columna - 1];
-		for (int i = 0; i < 3; i++){
-			for (int j = 0; j < 3; j++){
-				casellaMina = m_tauler[fila + j][columna + i];
+		int filNova = fmax(fila - 1, 0);
+		int colNova = fmax(columna - 1, 0);		
+		int filMaxNova = fmin(fila + 1, m_files -1 );
+		int colMaxNova = fmin(columna + 1, m_columnes - 1);
+		casellaMina = m_tauler[filNova][colNova];
+		for (int i = filNova; i < fmin(fila + 1, m_files); i++){
+			for (int j = colNova; j < fmin(columna + 1, m_columnes); j++){
+				casellaMina = m_tauler[filMaxNova][colMaxNova];
 				casellaMina.incrementaValor();
 			}
 
-		}
-	}
+		} 
+	} while (contador <= m_mines);
 
 
 }
@@ -115,7 +122,7 @@ hem de recorre si es posible tot el voltant de les casella clicada. El total max
 
 */
 int Tauler::getNumMines(Casella casellaClicada){
-	int nombreMines;
+	int nombreMines = 1;
 
 	//hem de recorre el voltant de la casella
 
@@ -129,9 +136,19 @@ void Tauler::marcaCasella(int fila, int columna)
 
 }
 
-
+/*
+* Destapa una casella del tauler, però no sempre es podrà fer, per tant comprova si
+* la casella es trova actualment destapada, després de destapar-la comprova els atributs
+* de la casella en concret.
+*@return True si la casella s'ha pogut destapar, false en cas contrari.
+*/
 bool Tauler::destaparCasella(int fila, int columna){
-	m_tauler[fila][columna].setVisible(true);
+	bool pot = true;
+	if (m_tauler[fila][columna].getVisible())
+		pot = false;
+	else
+		m_tauler[fila][columna].descobreixCasella();
+	return pot;
 }
 
 /**
@@ -142,10 +159,10 @@ bool Tauler::destaparCasella(int fila, int columna){
 */
 void Tauler::comprobarCasella(int x, int y){
 	Casella casella;
-	casella = m_tauler[x, y];
+	casella = m_tauler[x][y];
 	if (!casella.getVisible()){
 		if (casella.getMina()){
-			//fi partida
+			m_jocFinalitzat = true;
 		}
 		else{
 			//sumar un punto
@@ -154,7 +171,8 @@ void Tauler::comprobarCasella(int x, int y){
 				//pintar nombre veines
 			}
 			else{
-
+			
+				
 			}//hem guanyat?
 		}
 	}
@@ -162,16 +180,37 @@ void Tauler::comprobarCasella(int x, int y){
 
 void Tauler::pintaTauler(){
 	for (int i = 0; i < m_files; i++)
-		for (int j = 0; j < m_columnes; i++)
+	{
+		for (int j = 0; j < m_columnes; j++)
 		{
-		if (m_tauler[i][j].getMina())
-			cout << "X";
-		else if (m_tauler[i][j].getValor() == 0)
-			cout << "[	]";
-		else if (!m_tauler[i][j].getVisible())
-			cout << "[]";
-		else
-			cout << "[" << m_tauler[i][j].getValor() << "]";
+			if (m_tauler[i][j].getMina())
+				cout << "X";
+			else if (!m_tauler[i][j].getVisible())
+				cout << "[]";
+			else if (m_tauler[i][j].getValor() == 0)
+				cout << "[	]";
+			else
+				cout << "[" << m_tauler[i][j].getValor() << "]";
 		}
-	cout << endl;
+		cout << endl;
+	}
+}
+
+/*
+*@return True en cas d'haver guanyat el joc, false en cas contrari.
+*/
+bool Tauler::jocGuanyat()
+{
+	return m_jocGuanyat;
+}
+
+/*
+*@return True en cas d'haver perdut el joc, false en cas contrari.
+*/
+bool Tauler::jocPerdut(){
+	return m_jocFinalitzat;
+}
+
+bool Tauler::getVeines(Casella c) {
+	return NULL;
 }

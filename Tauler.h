@@ -1,5 +1,7 @@
+#pragma once
 #include "Casella.h"
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 const int N_FILAS_I_COL = 5;
@@ -38,6 +40,9 @@ public:
 	void afegirMines();
 	/////GETTERS I SETTERS/////////
 	int getNumMines(Casella clicada);
+	bool getVeines(Casella casella);
+	bool jocGuanyat();
+	bool jocPerdut();
 	void setNivell(int nivell);
 	//////////////////////////////
 
@@ -45,7 +50,7 @@ public:
 	void marcaCasella(int fila, int columna);
 	bool destaparCasella(int fila, int columna);
 
-	bool getVeines(Casella casella);
+	
 	void comprobarCasella(int x, int y);
 	void pintaTauler();
 
@@ -56,6 +61,8 @@ private:
 	int m_files;
 	int m_columnes;
 	int m_nivell;
+	bool m_jocFinalitzat;
+	bool m_jocGuanyat;
 	/////////////////////////
 
 	///// Necesitem una matriu dinámica per tal de crear-la en temps d'execució depenent del nivell de joc escollit.///////

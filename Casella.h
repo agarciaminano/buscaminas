@@ -3,7 +3,6 @@ class Casella {
 public:
 	Casella();
 	~Casella();
-	Casella(bool mina);
 	/////GETTERS I SETTERS//////////
 	bool getVisible();
 	bool getMina();
@@ -13,9 +12,9 @@ public:
 	void setMina();
 	////////////////////////////////
 
-	bool descobreixCasella();
+	void descobreixCasella();
 	void incrementaValor();
-	void setVisible(bool b);
+	
 	
 private:
 	bool m_visible;
