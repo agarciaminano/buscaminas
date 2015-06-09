@@ -97,15 +97,16 @@ void Tauler::afegirMines(){
 			casellaMina.setMina();
 			contador++;
 		}
-		//caso centro
+		/// Sempre agafem el máxim entre 0 i la fila actual -1 per no sortir-nos mai de la matriu.
+		// Fem el mateix amb la columna
 		int filNova = fmax(fila - 1, 0);
-		int colNova = fmax(columna - 1, 0);		
-		int filMaxNova = fmin(fila + 1, m_files -1 );
+		int colNova = fmax(columna - 1, 0);		//Amb la part superior dreta tenim el mateix problema, per tant agafem el mínim
+		int filMaxNova = fmin(fila + 1, m_files -1 );  // entre els dos valors per tal de no sortir-nos dels limits
 		int colMaxNova = fmin(columna + 1, m_columnes - 1);
 		casellaMina = m_tauler[filNova][colNova];
 		for (int i = filNova; i < fmin(fila + 1, m_files); i++){
 			for (int j = colNova; j < fmin(columna + 1, m_columnes); j++){
-				casellaMina = m_tauler[filMaxNova][colMaxNova];
+				casellaMina = m_tauler[i][j];
 				casellaMina.incrementaValor();
 			}
 
