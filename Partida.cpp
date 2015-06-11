@@ -34,7 +34,7 @@ void Partida::joc(){
 	bool jocAcabat = false;
 	do {
 		m_tauler.pintaTauler();
-		m_tauler.pintaTaulerTest();
+	//	m_tauler.pintaTaulerTest();
 		cout << endl << "Que vols fer? (Marcar (M), Destapar(D)): ";
 		cin >> opc;
 		cout << endl << "Indica fila i columna: ";
