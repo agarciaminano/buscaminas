@@ -40,19 +40,7 @@ void Tauler::destrueixTauler() {
 	delete[] m_tauler;
 }
 
-void Tauler::pintaTaulerTest() {
-	for (int i = 0; i < m_files; i++)
-	{
-		for (int j = 0; j < m_columnes; j++)
-		{
-			if (m_tauler[i][j].getMina())
-				cout << " X ";
-			else
-				cout << "[" << m_tauler[i][j].getValor() << "]";
-		}
-		cout << endl;
-	}
-}
+
 
 /*
 * Creació de matriu dinàmica!
@@ -79,7 +67,6 @@ void Tauler::inicialitza(){
 
 	//Destrueix tauler
 	m_casellesDestapades = 0;
-	m_puntuacio = 0;
 	m_casellaExplotadaX = -1;
 	m_casellaExplotadaY = -1;
 	m_files = N_FILAS_I_COL * m_nivell;
@@ -219,7 +206,7 @@ void Tauler::comprobarCasella(int x, int y){
 		}
 		else{
 			m_casellesDestapades++;
-			m_puntuacio++;
+		
 			
 			if (m_casellesDestapades == ((m_files*m_columnes)-m_mines))
 			{
@@ -240,7 +227,7 @@ void Tauler::comprobarCasella(int x, int y){
 * Si la casella té una mina dibuixarà X
 * Si la casella està marcada dibuixara [?]
 */
-void Tauler::pintaTauler(){
+void Tauler::pintaTauler(int puntuacio){
 	cout << "   ";
 	for (int i = 0; i < m_files; i++)
 		cout << i + 1 << "  ";
@@ -264,10 +251,12 @@ void Tauler::pintaTauler(){
 			
 		}
 		cout << endl;
+		
 	}
+	cout << "Puntuacio: " << puntuacio << endl;
 }
 
-void Tauler::pintaTaulerJocAcabat()
+void Tauler::pintaTaulerJocAcabat(int puntuacio)
 {
 	cout << "   ";
 	for (int i = 0; i < m_files; i++)
@@ -291,7 +280,9 @@ void Tauler::pintaTaulerJocAcabat()
 
 		}
 		cout << endl;
+	
 	}
+	cout << "Puntuacio: " << puntuacio << endl;
 }
 
 /*

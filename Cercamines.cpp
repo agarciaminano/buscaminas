@@ -2,12 +2,15 @@
 #include "Partida.h"
 #include <iostream>
 #include <conio.h>
+#include "Puntuacions.h"
 using namespace std;
 
 void main() {
 	char tecla;
 	bool sortir = false;
 	Partida p;
+	Puntuacions punt;
+	tResultat resul;
 	do
 	{ 
 	system("cls");
@@ -23,11 +26,24 @@ void main() {
 	case 'j': 
 		p = Partida();
 		p.iniciaPartida();
+		resul.nom = p.getNom();
+		resul.nivell = p.getNivell();
+		resul.puntuacio = p.getPuntuacio();
+		punt.desaResultat(resul);
 		cout << "Vols tornar a jugar? (S/N)";
 		if (_getch() == 's')
 			p.iniciaPartida();
 		break;
 	case 's': sortir = true;
+		break;
+	case 'n': punt.veureOrdenatPerNom();
+		
+		break;
+	case 'l': punt.veureOrdenatPerNivell();
+		
+		break;
+	case 'p': punt.veureOrdenatPerPuntuacio();
+		
 		break;
 	default:
 		break;

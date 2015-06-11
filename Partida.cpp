@@ -15,9 +15,9 @@ void Partida::iniciaPartida(){
 	cout << "Entra el teu nom: ";
 	cin >> m_nom;
 	cout << "Escull el nivell de joc: ";
-	int nivell;
-	cin >> nivell;
-	m_tauler = Tauler(nivell);
+	cin >> m_nivell;
+	m_tauler = Tauler(m_nivell);
+	m_puntuacio = 0;
 	m_tauler.inicialitza();
 	joc();
 
@@ -33,7 +33,7 @@ void Partida::joc(){
 	int columna;
 	bool jocAcabat = false;
 	do {
-		m_tauler.pintaTauler();
+		m_tauler.pintaTauler(m_puntuacio);
 	//	m_tauler.pintaTaulerTest();
 		cout << endl << "Que vols fer? (Marcar (M), Destapar(D)): ";
 		cin >> opc;
@@ -44,6 +44,8 @@ void Partida::joc(){
 		{
 			if (!m_tauler.destaparCasella(fila - 1, columna - 1))
 				cout << "No es pot destapar la casella seleccionada" << endl;
+			else if (m_tauler.jocPerdut())
+				m_puntuacio++;
 
 		}
 		else if (opc == 'm')
@@ -58,8 +60,19 @@ void Partida::joc(){
 	else
 		cout << "Has perdut!!" << endl;
 	
-	m_tauler.pintaTaulerJocAcabat();
+	m_tauler.pintaTaulerJocAcabat(m_puntuacio);
 	m_tauler.destrueixTauler();
-
+	
 }
 
+
+int Partida::getNivell(){
+	return m_nivell;
+}
+
+int Partida::getPuntuacio(){
+	return m_puntuacio;
+}
+char* Partida::getNom(){
+	return m_nom;
+}

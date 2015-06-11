@@ -24,6 +24,9 @@
     <ClInclude Include="Partida.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Puntuacions.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cercamines.cpp">
@@ -38,7 +41,7 @@
     <ClCompile Include="Partida.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Puntuacio.cpp">
+    <ClCompile Include="Puntuacions.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>

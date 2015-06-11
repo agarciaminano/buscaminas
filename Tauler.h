@@ -35,9 +35,8 @@ public:
 
 	
 	void comprobarCasella(int x, int y);
-	void pintaTauler();
-	void pintaTaulerTest();
-	void pintaTaulerJocAcabat();
+	void pintaTauler(int puntuacio);
+	void pintaTaulerJocAcabat(int puntuacio);
 
 private:
 
@@ -47,7 +46,6 @@ private:
 	int m_columnes;
 	int m_nivell;
 	int m_casellesDestapades;
-	int m_puntuacio;
 	bool m_jocFinalitzat;
 	bool m_jocGuanyat;
 	void destapaRecursiu(int x, int y);
