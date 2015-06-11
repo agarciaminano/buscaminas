@@ -7,8 +7,9 @@ public:
 	bool getVisible();
 	bool getMina();
 	int getValor();
+	bool getMarcada();
 
-	void setMarcada();
+	void setMarcada(bool b);
 	void setMina();
 	////////////////////////////////
 

@@ -30,13 +30,14 @@ public:
 	//////////////////////////////
 
 
-	void marcaCasella(int fila, int columna);
+	bool marcaCasella(int fila, int columna);
 	bool destaparCasella(int fila, int columna);
 
 	
 	void comprobarCasella(int x, int y);
 	void pintaTauler();
 	void pintaTaulerTest();
+	void pintaTaulerJocAcabat();
 
 private:
 
@@ -50,6 +51,8 @@ private:
 	bool m_jocFinalitzat;
 	bool m_jocGuanyat;
 	void destapaRecursiu(int x, int y);
+	int m_casellaExplotadaX;
+	int m_casellaExplotadaY;
 	/////////////////////////
 
 	///// Necesitem una matriu dinámica per tal de crear-la en temps d'execució depenent del nivell de joc escollit.///////

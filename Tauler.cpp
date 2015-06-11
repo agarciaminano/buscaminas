@@ -80,6 +80,8 @@ void Tauler::inicialitza(){
 	//Destrueix tauler
 	m_casellesDestapades = 0;
 	m_puntuacio = 0;
+	m_casellaExplotadaX = -1;
+	m_casellaExplotadaY = -1;
 	m_files = N_FILAS_I_COL * m_nivell;
 	m_columnes = N_FILAS_I_COL * m_nivell;
 	m_mines = N_FILAS_I_COL * m_nivell;
@@ -146,9 +148,18 @@ int Tauler::getNumMines(Casella casellaClicada){
 	return casellaClicada.getValor();
 }
 
-void Tauler::marcaCasella(int fila, int columna)
+bool Tauler::marcaCasella(int fila, int columna)
 {
-
+	bool pot = true;
+	if ((m_tauler[fila][columna].getVisible()) || (columna >= m_columnes)
+		|| (fila >= m_files) || (columna < 0) || (fila < 0))
+		pot = false;
+	else
+		if (m_tauler[fila][columna].getMarcada())
+			m_tauler[fila][columna].setMarcada(false);
+		else
+			m_tauler[fila][columna].setMarcada(true);
+	return pot;
 
 }
 /*
@@ -182,8 +193,9 @@ void Tauler::destapaRecursiu(int x, int y)
 */
 bool Tauler::destaparCasella(int fila, int columna){
 	bool pot = true;
-	if (m_tauler[fila][columna].getVisible())
-		pot = false;
+	if ((m_tauler[fila][columna].getVisible()) || (columna >= m_columnes) 
+		|| (fila >= m_files) || (columna < 0) || (fila < 0) || (m_tauler[fila][columna].getMarcada()))
+			pot = false;
 	else{
 		m_tauler[fila][columna].descobreixCasella();
 		comprobarCasella(fila, columna);
@@ -202,6 +214,8 @@ void Tauler::comprobarCasella(int x, int y){
 	casella = m_tauler[x][y];
 		if (casella.getMina()){
 			m_jocFinalitzat = true;
+			m_casellaExplotadaX = x;
+			m_casellaExplotadaY = y;
 		}
 		else{
 			m_casellesDestapades++;
@@ -237,8 +251,9 @@ void Tauler::pintaTauler(){
 		
 		for (int j = 0; j < m_columnes; j++)
 		{
-			
-			 if (!m_tauler[i][j].getVisible())
+			if (m_tauler[i][j].getMarcada())
+				cout << "[?]";
+			 else if (!m_tauler[i][j].getVisible())
 				cout << "[ ]";
 			 else if (m_tauler[i][j].getMina())
 					cout << " X ";
@@ -247,6 +262,33 @@ void Tauler::pintaTauler(){
 			else  
 				cout << "   ";
 			
+		}
+		cout << endl;
+	}
+}
+
+void Tauler::pintaTaulerJocAcabat()
+{
+	cout << "   ";
+	for (int i = 0; i < m_files; i++)
+		cout << i + 1 << "  ";
+	cout << endl;
+	for (int i = 0; i < m_files; i++)
+	{
+		cout << i + 1 << " ";
+
+		for (int j = 0; j < m_columnes; j++)
+		{
+
+			if (i == m_casellaExplotadaX && j == m_casellaExplotadaY)
+				cout << " X ";
+			else if (m_tauler[i][j].getMina())
+				cout << "[*]";
+			else if (getVeines(m_tauler[i][j]))
+				cout << "[" << m_tauler[i][j].getValor() << "]";
+			else
+				cout << "   ";
+
 		}
 		cout << endl;
 	}

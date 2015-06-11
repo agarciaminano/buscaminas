@@ -23,10 +23,13 @@ int Casella::getValor(){
 	return m_valor;
 }
 
-void Casella::setMarcada(){
-	m_marcada = true;
+void Casella::setMarcada(bool b){
+	m_marcada = b;
 }
 
+bool Casella::getMarcada(){
+	return m_marcada;
+}
 void Casella::setMina(){
 	m_minada = true;
 }

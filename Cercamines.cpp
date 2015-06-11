@@ -24,7 +24,8 @@ void main() {
 		p = Partida();
 		p.iniciaPartida();
 		cout << "Vols tornar a jugar? (S/N)";
-		_getch();
+		if (_getch() == 's')
+			p.iniciaPartida();
 		break;
 	case 's': sortir = true;
 		break;
