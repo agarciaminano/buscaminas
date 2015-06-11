@@ -11,6 +11,7 @@ public:
 	int getPuntuacio();
 	int getNivell();
 	char* getNom();
+	void destrueixTauler();
 private:
 	char m_nom[MAX_DIGITS_NOM];
 	int m_puntuacio;

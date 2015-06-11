@@ -58,10 +58,14 @@ void Tauler::creaTauler() {
 }
 
 
-void Tauler::setNivell(int nivell)
-{
-	m_nivell = nivell;
-}
+
+
+/*
+*
+* Inicialitza el tauler amb les dades per defecte (segons el nivell de joc escollit.
+* També col·loca les mines de forma aleatòria.
+*
+*/
 
 void Tauler::inicialitza(){
 
@@ -86,7 +90,7 @@ void Tauler::inicialitza(){
 
 
 /*
-		Metode per afegir mines al inicialitzar la partida
+Metode per afegir mines al inicialitzar la partida
 */
 void Tauler::afegirMines(){
 
@@ -98,43 +102,51 @@ void Tauler::afegirMines(){
 	do {
 		fila = rand() % m_files;
 		columna = rand() % m_columnes;
-		
-
 		if (!m_tauler[fila][columna].getMina()){
 			m_tauler[fila][columna].setMina();
 			contador++;
-		}
-		/// Sempre agafem el máxim entre 0 i la fila actual -1 per no sortir-nos mai de la matriu.
-		// Fem el mateix amb la columna
-		int filNova = fmax(fila - 1, 0);
-		int colNova = fmax(columna - 1, 0);		//Amb la part superior dreta tenim el mateix problema, per tant agafem el mínim
-		int filMaxNova = fmin(fila + 1, m_files-1 );  // entre els dos valors per tal de no sortir-nos dels limits
-		int colMaxNova = fmin(columna + 1, m_columnes-1);
-	
-		for (int i = filNova; i <= filMaxNova; i++){
-			for (int j = colNova; j <= colMaxNova; j++){
-				m_tauler[i][j].incrementaValor();
-				
-			}
+			/// Sempre agafem el máxim entre 0 i la fila actual -1 per no sortir-nos mai de la matriu.
+			// Fem el mateix amb la columna
+			int filNova = fmax(fila - 1, 0);
+			int colNova = fmax(columna - 1, 0);		//Amb la part superior dreta tenim el mateix problema, per tant agafem el mínim
+			int filMaxNova = fmin(fila + 1, m_files - 1);  // entre els dos valors per tal de no sortir-nos dels limits
+			int colMaxNova = fmin(columna + 1, m_columnes - 1);
 
-		} 
-	} while (contador <= m_mines);
+			for (int i = filNova; i <= filMaxNova; i++){
+				for (int j = colNova; j <= colMaxNova; j++){
+					m_tauler[i][j].incrementaValor();
+
+				}
+
+			}
+		}
+		
+		
+	
+	} while (contador < m_mines);
 
 
 }
 
-/*metode per obtenir el nombre de mines que te a voltant de la casella clicada "visible"
-
-hem de recorre si es posible tot el voltant de les casella clicada. El total maxim per recorre es 8 i el minim 3
-
-
+/*
+*
+* Mètode per obtenir el nombre de mines veines.
+* @param casellaClicada: casella sobre la que volem consultar
+* @return nombre total de mines veines.
 */
 int Tauler::getNumMines(Casella casellaClicada){
 
 
 	return casellaClicada.getValor();
 }
-
+/**
+*
+* Permet marcar una casella, si la casella ja es troba marcada la desmarcarà, tambè comproba que la casella
+* escollida no es trobi fora dels limits de la matriu.
+* @param fila: fila que es vol marcar
+* @param columna: columna que es vol marcar
+* @return false si no s'ha pogut marcar la casella, true en cas contrari.
+*/
 bool Tauler::marcaCasella(int fila, int columna)
 {
 	bool pot = true;
@@ -151,6 +163,7 @@ bool Tauler::marcaCasella(int fila, int columna)
 }
 /*
 * Mètode per destapar les caselles sense mines veines de forma recursiva
+*
 */
 void Tauler::destapaRecursiu(int x, int y)
 {
@@ -159,13 +172,14 @@ void Tauler::destapaRecursiu(int x, int y)
 	int colNova = fmax(y - 1, 0);		//Amb la part superior dreta tenim el mateix problema, per tant agafem el mínim
 	int filMaxNova = fmin(x + 1, m_files - 1);  // entre els dos valors per tal de no sortir-nos dels limits
 	int colMaxNova = fmin(y + 1, m_columnes - 1);
-	m_tauler[x][y].descobreixCasella();
+	m_tauler[x][y].descobreixCasella(); // Descobrim la casella i incrementem el comptador, però no la puntuació.
 	m_casellesDestapades++;
-	if (!getVeines(m_tauler[x][y])) 
-		for (int i = filNova; i <= filMaxNova; i++)
+	if (!getVeines(m_tauler[x][y]))    // Si la casella no té mines veines començem el mateix procès recursiu per a totes les caselles 
+		for (int i = filNova; i <= filMaxNova; i++) //	adjacents. En cas de que tingui mines veines no fem res.
 			for (int j = colNova; j <= colMaxNova; j++)
-				if (!m_tauler[i][j].getVisible())
-					destapaRecursiu(i, j);		
+				if (!m_tauler[i][j].getVisible()) //També ens assegurem que la casella no sigui visible, 
+					destapaRecursiu(i, j);			//ja que sinò mai acabaria la recursivitat.
+									
 
 			
 		
@@ -207,14 +221,14 @@ void Tauler::comprobarCasella(int x, int y){
 		else{
 			m_casellesDestapades++;
 		
-			
+			///Si ja hem destapat totes les caselles possibles guanyem el joc
 			if (m_casellesDestapades == ((m_files*m_columnes)-m_mines))
 			{
 				m_jocGuanyat = true;
 			}
 			else if (!getVeines(casella))
 			{
-				destapaRecursiu(x, y);
+				destapaRecursiu(x, y); //Si la casella no té cap mina veina començem el procès recursiu.
 			}
 		}
 	
@@ -255,7 +269,11 @@ void Tauler::pintaTauler(int puntuacio){
 	}
 	cout << "Puntuacio: " << puntuacio << endl;
 }
-
+/**
+* Mètode encarregat de pintar el tauler un cop acabat el joc, es diferencia de pintarTauler bàsicament
+* per que hem de mostrar totes les caselles i les seves mines, com que aquesta situació nomès es produirà
+* un cop en tot el joc (al acabar) es més eficient fer-ho en un mètode apartat.
+*/
 void Tauler::pintaTaulerJocAcabat(int puntuacio)
 {
 	cout << "   ";
@@ -293,6 +311,8 @@ bool Tauler::jocGuanyat()
 	return m_jocGuanyat;
 }
 
+
+
 /*
 *@return True en cas d'haver perdut el joc, false en cas contrari.
 */
@@ -300,6 +320,10 @@ bool Tauler::jocPerdut(){
 	return m_jocFinalitzat;
 }
 
+/**
+* Retorna si la casella passada com a argument té alguna mina veina.
+*
+*/
 bool Tauler::getVeines(Casella c) {
 	return (c.getValor() > 0);
 }

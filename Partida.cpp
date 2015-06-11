@@ -7,9 +7,10 @@ Partida::Partida()
 
 Partida::~Partida() 
 {
-	m_tauler.destrueixTauler();
+	destrueixTauler();
 }
 
+/***/
 void Partida::iniciaPartida(){
 	system("cls");
 	cout << "Entra el teu nom: ";
@@ -34,7 +35,6 @@ void Partida::joc(){
 	bool jocAcabat = false;
 	do {
 		m_tauler.pintaTauler(m_puntuacio);
-	//	m_tauler.pintaTaulerTest();
 		cout << endl << "Que vols fer? (Marcar (M), Destapar(D)): ";
 		cin >> opc;
 		cout << endl << "Indica fila i columna: ";
@@ -44,7 +44,7 @@ void Partida::joc(){
 		{
 			if (!m_tauler.destaparCasella(fila - 1, columna - 1))
 				cout << "No es pot destapar la casella seleccionada" << endl;
-			else if (m_tauler.jocPerdut())
+			else if (!m_tauler.jocPerdut())
 				m_puntuacio++;
 
 		}
@@ -61,7 +61,7 @@ void Partida::joc(){
 		cout << "Has perdut!!" << endl;
 	
 	m_tauler.pintaTaulerJocAcabat(m_puntuacio);
-	m_tauler.destrueixTauler();
+	
 	
 }
 
@@ -75,4 +75,8 @@ int Partida::getPuntuacio(){
 }
 char* Partida::getNom(){
 	return m_nom;
+}
+
+void Partida::destrueixTauler() {
+	m_tauler.destrueixTauler();
 }

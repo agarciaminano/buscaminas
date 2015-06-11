@@ -8,8 +8,10 @@ const int N_FILAS_I_COL = 5;
 
 
 
-/*
-Creacio de la clase Tauler amb el constructor i la funcio obtenir el numero de mines
+//*
+/* Classe encarregada de pintar el tauler i de manipular les caselles que nomès ell sap on estàn col·locades, s'ha d'inicialitzar 
+* obligatoriament amb un nivell, ja que la matriu dinàmica es crea basantse en aquest nivell.
+*
 */
 class Tauler {
 public:
@@ -26,7 +28,7 @@ public:
 	bool getVeines(Casella casella);
 	bool jocGuanyat();
 	bool jocPerdut();
-	void setNivell(int nivell);
+	
 	//////////////////////////////
 
 

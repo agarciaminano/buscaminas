@@ -3,9 +3,11 @@
 #include <iostream>
 #include <conio.h>
 #include "Puntuacions.h"
+#include <locale.h>
 using namespace std;
 
 void main() {
+	locale::global(locale("spanish"));
 	char tecla;
 	bool sortir = false;
 	Partida p;
@@ -32,6 +34,7 @@ void main() {
 		punt.desaResultat(resul);
 		cout << "Vols tornar a jugar? (S/N)";
 		if (_getch() == 's')
+			p.destrueixTauler();
 			p.iniciaPartida();
 		break;
 	case 's': sortir = true;
