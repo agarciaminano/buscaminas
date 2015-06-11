@@ -34,8 +34,10 @@ void main() {
 		punt.desaResultat(resul);
 		cout << "Vols tornar a jugar? (S/N)";
 		if (_getch() == 's')
+		{
 			p.destrueixTauler();
 			p.iniciaPartida();
+		}
 		break;
 	case 's': sortir = true;
 		break;
