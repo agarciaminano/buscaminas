@@ -11,9 +11,13 @@ Partida::~Partida()
 }
 
 void Partida::iniciaPartida(){
+	system("cls");
 	cout << "Entra el teu nom: ";
 	cin >> m_nom;
-	m_tauler = Tauler(1);
+	cout << "Escull el nivell de joc: ";
+	int nivell;
+	cin >> nivell;
+	m_tauler = Tauler(nivell);
 	m_tauler.inicialitza();
 	joc();
 
@@ -38,11 +42,19 @@ void Partida::joc(){
 		cin >> columna;
 		if (opc == 'd')
 		{
-			if (m_tauler.destaparCasella(fila-1, columna-1));
-			
+			if (m_tauler.destaparCasella(fila - 1, columna - 1));
+
+			else
+				cout << "No es pot destapar la casella seleccionada";
 
 		}
+		jocAcabat = (m_tauler.jocGuanyat() || m_tauler.jocPerdut());
 	} while (!jocAcabat);
+	if (m_tauler.jocGuanyat())
+		cout << "Has guanyat la partida!!";
+	else
+		cout << "Has perdut!!";
+	
 	m_tauler.pintaTauler();
 	m_tauler.destrueixTauler();
 

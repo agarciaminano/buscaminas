@@ -83,6 +83,8 @@ void Tauler::inicialitza(){
 	m_files = N_FILAS_I_COL * m_nivell;
 	m_columnes = N_FILAS_I_COL * m_nivell;
 	m_mines = N_FILAS_I_COL * m_nivell;
+	m_jocFinalitzat = false;
+	m_jocGuanyat = false;
 	creaTauler();
 	
 	//Afegim les mines
@@ -161,21 +163,15 @@ void Tauler::destapaRecursiu(int x, int y)
 	int colMaxNova = fmin(y + 1, m_columnes - 1);
 	m_tauler[x][y].descobreixCasella();
 	m_casellesDestapades++;
-	if (!getVeines(m_tauler[x][y])) {
-		for (int i = filNova; i <= filMaxNova; i++){
-			for (int j = colNova; j <= colMaxNova; j++){
+	if (!getVeines(m_tauler[x][y])) 
+		for (int i = filNova; i <= filMaxNova; i++)
+			for (int j = colNova; j <= colMaxNova; j++)
 				if (!m_tauler[i][j].getVisible())
-				{
+					destapaRecursiu(i, j);		
 
-					destapaRecursiu(i, j);
-				}
-
-
-
-
-			}
-		}
-	}
+			
+		
+	
 }
 
 /*
@@ -231,19 +227,25 @@ void Tauler::comprobarCasella(int x, int y){
 * Si la casella està marcada dibuixara [?]
 */
 void Tauler::pintaTauler(){
+	cout << "   ";
+	for (int i = 0; i < m_files; i++)
+		cout << i + 1 << "  ";
+	cout << endl;
 	for (int i = 0; i < m_files; i++)
 	{
+		cout << i+1 << " ";
+		
 		for (int j = 0; j < m_columnes; j++)
 		{
 			
 			 if (!m_tauler[i][j].getVisible())
-				cout << "[]";
+				cout << "[ ]";
 			 else if (m_tauler[i][j].getMina())
 					cout << " X ";
 			 else if (getVeines(m_tauler[i][j]))
 				 cout << "[" << m_tauler[i][j].getValor() << "]";
 			else  
-				cout << "  ";
+				cout << "   ";
 			
 		}
 		cout << endl;
