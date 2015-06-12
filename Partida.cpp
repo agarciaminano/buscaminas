@@ -4,21 +4,27 @@ Partida::Partida()
 {
 
 }
-
+/**
+* Destructor de la classe.
+*/
 Partida::~Partida() 
 {
-	destrueixTauler();
+	destrueixTauler(); //Destruim el tauler sempre que la partida s'acabi, ja que l'usuari pot tancar el joc sense haver acabat la partida
+						// i d'aquesta manera ens assegurem que es destrueixi sempre el tauler.
 }
 
-/***/
+/**
+* Demana les dades a l'usuari (nom i nivell), inicialitza les variables de joc i el tauler.
+*
+*/
 void Partida::iniciaPartida(){
 	system("cls");
 	cout << "Entra el teu nom: ";
-	cin >> m_nom;
+	cin >> m_resultat.nom;
 	cout << "Escull el nivell de joc: ";
-	cin >> m_nivell;
-	m_tauler = Tauler(m_nivell);
-	m_puntuacio = 0;
+	cin >> m_resultat.nivell;
+	m_tauler = Tauler(m_resultat.nivell);
+	m_resultat.puntuacio = 0;
 	m_tauler.inicialitza();
 	joc();
 
@@ -34,7 +40,7 @@ void Partida::joc(){
 	int columna;
 	bool jocAcabat = false;
 	do {
-		m_tauler.pintaTauler(m_puntuacio);
+		m_tauler.pintaTauler(m_resultat.puntuacio);
 		cout << endl << "Que vols fer? (Marcar (M), Destapar(D)): ";
 		cin >> opc;
 		cout << endl << "Indica fila i columna: ";
@@ -45,7 +51,7 @@ void Partida::joc(){
 			if (!m_tauler.destaparCasella(fila - 1, columna - 1))
 				cout << "No es pot destapar la casella seleccionada" << endl;
 			else if (!m_tauler.jocPerdut())
-				m_puntuacio++;
+				m_resultat.puntuacio++;
 
 		}
 		else if (opc == 'm')
@@ -60,23 +66,19 @@ void Partida::joc(){
 	else
 		cout << "Has perdut!!" << endl;
 	
-	m_tauler.pintaTaulerJocAcabat(m_puntuacio);
+	m_tauler.pintaTaulerJocAcabat(m_resultat.puntuacio);
 	
 	
 }
 
 
-int Partida::getNivell(){
-	return m_nivell;
-}
-
-int Partida::getPuntuacio(){
-	return m_puntuacio;
-}
-char* Partida::getNom(){
-	return m_nom;
-}
-
+/**
+* Crida al mètode destrueixTauler de tauler per que alliberi recursos.
+*/
 void Partida::destrueixTauler() {
 	m_tauler.destrueixTauler();
+}
+
+tResultat Partida::getResultat(){
+	return m_resultat;
 }

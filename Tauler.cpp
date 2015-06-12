@@ -71,8 +71,8 @@ void Tauler::inicialitza(){
 
 	//Destrueix tauler
 	m_casellesDestapades = 0;
-	m_casellaExplotadaX = -1;
-	m_casellaExplotadaY = -1;
+	m_casellaExplotadaX = -1; //Guardem la posició de la casella explotada perque es més eficient guardar dues coordenades
+	m_casellaExplotadaY = -1; //a crear un nou atribut a la classe casella. (nomès una casella podrà explotar)
 	m_files = N_FILAS_I_COL * m_nivell;
 	m_columnes = N_FILAS_I_COL * m_nivell;
 	m_mines = N_FILAS_I_COL * m_nivell;
@@ -219,16 +219,17 @@ void Tauler::comprobarCasella(int x, int y){
 			m_casellaExplotadaY = y;
 		}
 		else{
-			m_casellesDestapades++;
-		
 			///Si ja hem destapat totes les caselles possibles guanyem el joc
-			if (m_casellesDestapades == ((m_files*m_columnes)-m_mines))
-			{
-				m_jocGuanyat = true;
-			}
-			else if (!getVeines(casella))
+		
+			 if (!getVeines(casella))
 			{
 				destapaRecursiu(x, y); //Si la casella no té cap mina veina començem el procès recursiu.
+			}
+			else
+				m_casellesDestapades++;
+			if (m_casellesDestapades == ((m_files*m_columnes) - m_mines))
+			{
+				m_jocGuanyat = true;
 			}
 		}
 	
@@ -242,13 +243,19 @@ void Tauler::comprobarCasella(int x, int y){
 * Si la casella està marcada dibuixara [?]
 */
 void Tauler::pintaTauler(int puntuacio){
-	cout << "   ";
+	cout << "    ";
 	for (int i = 0; i < m_files; i++)
-		cout << i + 1 << "  ";
+		if (i < 9)
+			cout << i + 1 << "  ";
+		else
+			cout << i + 1 << " ";
 	cout << endl;
 	for (int i = 0; i < m_files; i++)
 	{
-		cout << i+1 << " ";
+		if (i < 9)
+			cout << i + 1 << "  ";
+		else
+			cout << i + 1 << " ";
 		
 		for (int j = 0; j < m_columnes; j++)
 		{
@@ -269,6 +276,7 @@ void Tauler::pintaTauler(int puntuacio){
 	}
 	cout << "Puntuacio: " << puntuacio << endl;
 }
+
 /**
 * Mètode encarregat de pintar el tauler un cop acabat el joc, es diferencia de pintarTauler bàsicament
 * per que hem de mostrar totes les caselles i les seves mines, com que aquesta situació nomès es produirà
@@ -276,14 +284,19 @@ void Tauler::pintaTauler(int puntuacio){
 */
 void Tauler::pintaTaulerJocAcabat(int puntuacio)
 {
-	cout << "   ";
+	cout << "    ";
 	for (int i = 0; i < m_files; i++)
-		cout << i + 1 << "  ";
+		if (i < 9)
+			cout << i + 1 << "  ";
+		else
+			cout << i + 1 << " ";
 	cout << endl;
 	for (int i = 0; i < m_files; i++)
 	{
-		cout << i + 1 << " ";
-
+		if (i < 9)
+			cout << i + 1 << "  ";
+		else
+			cout << i + 1 << " ";
 		for (int j = 0; j < m_columnes; j++)
 		{
 
@@ -291,8 +304,11 @@ void Tauler::pintaTaulerJocAcabat(int puntuacio)
 				cout << " X ";
 			else if (m_tauler[i][j].getMina())
 				cout << "[*]";
+			else if (!m_tauler[i][j].getVisible())
+				cout << "[ ]";
 			else if (getVeines(m_tauler[i][j]))
 				cout << "[" << m_tauler[i][j].getValor() << "]";
+		
 			else
 				cout << "   ";
 

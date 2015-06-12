@@ -2,17 +2,19 @@
 #include "Partida.h"
 #include <iostream>
 #include <conio.h>
-#include "Puntuacions.h"
 #include <locale.h>
 using namespace std;
-
+/**
+* Programa principal, s'encarrega de mostrar un menu a l'usuari per que esculli l'acció que dessitja, en cas
+* de que vulgui jugar, inicia la partida i el control passa a la classe partida, aquesta classe torna a agafar el control
+* un cop que la partida ha acabat.
+*/
 void main() {
 	locale::global(locale("spanish"));
-	char tecla;
+	char tecla,teclaTornar;
 	bool sortir = false;
-	Partida p;
-	Puntuacions punt;
-	tResultat resul;
+	Partida p = Partida();
+	Puntuacions punt = Puntuacions(); 
 	do
 	{ 
 	system("cls");
@@ -25,19 +27,15 @@ void main() {
 	tecla = _getch();
 	switch (tecla)
 	{
-	case 'j': 
-		p = Partida();
-		p.iniciaPartida();
-		resul.nom = p.getNom();
-		resul.nivell = p.getNivell();
-		resul.puntuacio = p.getPuntuacio();
-		punt.desaResultat(resul);
-		cout << "Vols tornar a jugar? (S/N)";
-		if (_getch() == 's')
-		{
+	case 'j':
+		do {
+			p.iniciaPartida();		
+			punt.desaResultat(p.getResultat());
+			cout << "Vols tornar a jugar? (S/N)";
+			teclaTornar = _getch();
 			p.destrueixTauler();
-			p.iniciaPartida();
 		}
+		while ((teclaTornar == 's'));
 		break;
 	case 's': sortir = true;
 		break;

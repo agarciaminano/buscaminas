@@ -77,10 +77,11 @@ void Puntuacions::desaResultat(tResultat resultat)
  */
 void Puntuacions::m_intercanviar(int pos1, int pos2)
 {
-	tResultat aux;
-	aux = m_llistat[pos1];
+	tResultat auxi;
+	auxi = m_llistat[pos1];
 	m_llistat[pos1] = m_llistat[pos2];
-	m_llistat[pos2] = aux;
+	m_llistat[pos2] = auxi;
+
 }
 
 /**
@@ -105,6 +106,7 @@ void Puntuacions::m_dividirVector(int primer, int ultim, int& posPivot)
 {
 	int indexEsq, indexDreta;
 	m_intercanviar(primer, posPivot); /* Pivot a la 1ª pos. */ 
+	posPivot = primer;
 	indexEsq = primer; indexDreta = ultim;
 	while (indexEsq != indexDreta)
 	{ /* A la dreta elements >= pivot */ 

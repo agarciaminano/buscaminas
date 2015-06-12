@@ -1,5 +1,5 @@
 #include "Tauler.h"
-
+#include "Puntuacions.h"
 const int MAX_DIGITS_NOM = 25;
 
 class Partida {
@@ -8,14 +8,10 @@ public:
 	~Partida();
 	void iniciaPartida();
 	void joc();
-	int getPuntuacio();
-	int getNivell();
-	char* getNom();
+	tResultat getResultat();
 	void destrueixTauler();
 private:
-	char m_nom[MAX_DIGITS_NOM];
-	int m_puntuacio;
-	int m_nivell;
+	tResultat m_resultat;
 	Tauler m_tauler;
 
 };

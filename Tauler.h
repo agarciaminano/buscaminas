@@ -31,7 +31,7 @@ public:
 	
 	//////////////////////////////
 
-
+	
 	bool marcaCasella(int fila, int columna);
 	bool destaparCasella(int fila, int columna);
 
